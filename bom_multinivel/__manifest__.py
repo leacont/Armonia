@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # Not auto-installed: install manually from Apps (requires Manufacturing and Sales). Odoo 19.
 {
-    "name": "Multilevel BOM",
-    "version": "19.0.1.0.3",
-    "summary": "[Odoo 19] Project number and multilevel manufacturing order explosion on confirm",
+    "name": "Multi-Level BoM Explorer",
+    "version": "19.0.1.0.4",
+    "summary": "[Odoo 19] Advanced manufacturing automation — project traceability and multilevel MO explosion",
     "description": """
 Odoo 19.0 — Requires a 19.0 server / branch.
 
@@ -23,6 +23,7 @@ use only one approach or align dependencies.
     "application": True,
     "sequence": 20,
     "depends": ["mrp", "sale"],
+    "images": ["static/description/main_screenshot.png"],
     "data": [
         "data/project_number_sequence.xml",
         "views/mrp_production_views.xml",
