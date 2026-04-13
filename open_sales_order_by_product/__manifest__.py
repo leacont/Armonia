@@ -1,32 +1,91 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Open Sales Order Lines by Product",
-    "version": "19.0.1.0.8",
+    "version": "19.0.1.1.0",
     "category": "Sales/Reporting",
-    "summary": "Instant visibility of pending product deliveries from all confirmed Sales Orders (Odoo 19).",
+    "summary": "Open Sales Order Lines by Product: pending quantities from confirmed orders, with filters by product and customer.",
     "description": """
-Pending Sales Orders by Product (Odoo 19 Enterprise/Community)
-=============================================================
+<h1 style="font-size:36px;">Open Sales Order Lines by Product</h1>
 
-Stop hunting through multiple Sales Orders to find out what products you still need to
-deliver. This module provides an instant, read-only dashboard of all confirmed sales order
-lines that have a remaining quantity to be delivered (Ordered Qty - Delivered Qty).
+<p style="font-size:16px;">
+Get a clear and centralized view of all products that are still pending delivery from confirmed Sales Orders.
+</p>
 
-Key Benefits for Your Business:
--------------------------------
-* **Optimize inventory:** See which products are committed to customers and still pending delivery.
-* **Improve customer service:** Answer fulfilment questions from one consolidated view.
-* **Save time:** Reduce manual spreadsheets and repetitive searching; group by product or customer.
-* **Decision making:** Spot products that are often ordered but slow to ship.
+<img src="/open_sales_order_by_product/static/description/banner.png" style="width:100%; border-radius:12px;"/>
 
-Technical Features:
--------------------
-* High-performance SQL view (`open_sales_report`) for fast loading with large datasets.
-* Odoo 19 list, graph, and pivot views.
-* Works with standard Sales and Inventory apps.
+<hr/>
 
-Requires: ``sale_management`` and ``stock``.
-    """,
+<h2>📊 See All Pending Items in One Place</h2>
+
+<p>
+This report shows all Sales Order lines where there is still quantity pending delivery.
+</p>
+
+<img src="/open_sales_order_by_product/static/description/screen_01.png" style="width:100%; border-radius:10px;"/>
+
+<ul>
+<li>✔ Ordered vs Delivered vs Pending quantities</li>
+<li>✔ Pending quantity highlighted clearly</li>
+<li>✔ Pending amount calculation</li>
+</ul>
+
+<hr/>
+
+<h2>🔎 Filter by Customer or Product</h2>
+
+<p>
+Quickly filter the report using the built-in search panel to focus on specific customers or products.
+</p>
+
+<img src="/open_sales_order_by_product/static/description/screen_02.png" style="width:100%; border-radius:10px;"/>
+
+<ul>
+<li>✔ Filter by customer</li>
+<li>✔ Filter by product</li>
+<li>✔ Instant recalculation of totals</li>
+</ul>
+
+<hr/>
+
+<h2>📄 From Sales Orders to Actionable Report</h2>
+
+<p>
+Instead of reviewing Sales Orders one by one, this module consolidates all pending delivery lines into a single report.
+</p>
+
+<img src="/open_sales_order_by_product/static/description/screen_03.png" style="width:100%; border-radius:10px;"/>
+
+<ul>
+<li>✔ Identify what still needs to be delivered</li>
+<li>✔ Understand customer commitments</li>
+<li>✔ Improve follow-up and delivery planning</li>
+</ul>
+
+<hr/>
+
+<h2>📈 Analysis & Reporting</h2>
+
+<p>
+Use list, pivot, and graph views to analyze open quantities by product or customer.
+</p>
+
+<ul>
+<li>✔ Group by product</li>
+<li>✔ Group by customer</li>
+<li>✔ Identify high pending volumes</li>
+</ul>
+
+<hr/>
+
+<h2>⚙️ Technical Details</h2>
+
+<ul>
+<li>✔ Read-only SQL-based report</li>
+<li>✔ Includes confirmed Sales Orders only</li>
+<li>✔ Excludes down payments and non-product lines</li>
+<li>✔ Shows only lines with pending delivery quantity</li>
+</ul>
+""",
     "author": "Armonia",
     "website": "https://www.armonia.com.ar",
     "license": "OPL-1",
