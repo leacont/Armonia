@@ -3,7 +3,7 @@ from odoo import models, fields, tools
 
 class OpenSalesReport(models.Model):
     _name = "open.sales.report"
-    _description = "Open Sales Order Lines by Product"
+    _description = "Open Sales Order Report"
     _auto = False
     _order = "date_order desc, id"
 

@@ -5,7 +5,7 @@
         <field name="name">open.sales.report.list</field>
         <field name="model">open.sales.report</field>
         <field name="arch" type="xml">
-            <list string="Open Sales Order Lines by Product" create="0" edit="0" delete="0">
+            <list string="Open Sales Order Report" create="0" edit="0" delete="0">
                 <field name="date_order"/>
                 <field name="sale_order_id"/>
                 <field name="partner_id"/>
@@ -26,7 +26,7 @@
         <field name="name">open.sales.report.form</field>
         <field name="model">open.sales.report</field>
         <field name="arch" type="xml">
-            <form string="Open Sales Order Lines by Product" create="0" edit="0" delete="0">
+            <form string="Open Sales Order Report" create="0" edit="0" delete="0">
                 <sheet>
                     <group>
                         <field name="date_order"/>
@@ -53,7 +53,7 @@
         <field name="name">open.sales.report.search</field>
         <field name="model">open.sales.report</field>
         <field name="arch" type="xml">
-            <search string="Open Sales Order Lines by Product">
+            <search string="Open Sales Order Report">
                 <field name="sale_order_id"/>
                 <field name="partner_id"/>
                 <field name="product_id"/>
@@ -81,7 +81,7 @@
         <field name="name">open.sales.report.graph</field>
         <field name="model">open.sales.report</field>
         <field name="arch" type="xml">
-            <graph string="Open Sales Order Lines by Product" type="bar">
+            <graph string="Open Sales Order Report" type="bar">
                 <field name="date_order" type="row"/>
                 <field name="qty_pending" type="measure"/>
                 <field name="amount_pending" type="measure"/>
@@ -96,7 +96,7 @@
         <field name="name">open.sales.report.pivot</field>
         <field name="model">open.sales.report</field>
         <field name="arch" type="xml">
-            <pivot string="Open Sales Order Lines by Product">
+            <pivot string="Open Sales Order Report">
                 <field name="product_id" type="row"/>
                 <field name="partner_id" type="col"/>
                 <field name="qty_pending" type="measure"/>
@@ -107,13 +107,13 @@
 
     <!-- Action -->
     <record id="action_open_sales_report" model="ir.actions.act_window">
-        <field name="name">Open Sales Order Lines by Product</field>
+        <field name="name">Open Sales Order Report</field>
         <field name="res_model">open.sales.report</field>
         <field name="view_mode">list,pivot,graph,form</field>
         <field name="search_view_id" ref="view_open_sales_report_search"/>
         <field name="context">{'graph_measure': 'qty_pending'}</field>
         <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">Open Sales Order Lines by Product</p>
+            <p class="o_view_nocontent_smiling_face">Open Sales Order Report</p>
             <p>Confirmed sales order lines with quantity still to deliver (read-only report).</p>
         </field>
     </record>
@@ -121,7 +121,7 @@
     <!-- MenuItem -->
     <menuitem
         id="menu_open_sales_report"
-        name="Open Sales Order Lines by Product"
+        name="Open Sales Order Report"
         parent="sale.sale_menu_root"
         action="action_open_sales_report"
         sequence="80"

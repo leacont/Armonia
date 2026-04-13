@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 {
-    "name": "Open Sales Order Lines by Product",
-    "version": "19.0.1.1.4",
+    "name": "Open Sales Order Report",
+    "version": "19.0.1.1.5",
     "category": "Sales/Reporting",
-    "summary": "Open Sales Order Lines by Product: pending quantities from confirmed orders, with filters by product and customer.",
+    "summary": "Open Sales Order Report: pending quantities from confirmed orders, with filters by product and customer.",
     "description": """
-Open Sales Order Lines by Product
-=================================
+Open Sales Order Report
+=======================
 
 Pending delivery from confirmed sales orders.
 
