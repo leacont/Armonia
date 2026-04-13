@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Open Sales Order Lines by Product</title>
+  <style>
+    body { font-family: system-ui, sans-serif; color: #333; max-width: 900px; margin: 0 auto; padding: 16px; }
+    h1 { color: #714B67; font-size: 1.75rem; margin-bottom: 0.25rem; }
+    .sub { color: #666; margin-bottom: 1.5rem; }
+    h2 { font-size: 1.1rem; margin-top: 1.75rem; border-bottom: 1px solid #ddd; padding-bottom: 0.25rem; }
+    ul { line-height: 1.5; }
+    .shot { width: 100%; border-radius: 8px; border: 1px solid #e0e0e0; margin: 12px 0; }
+  </style>
+</head>
+<body>
+  <h1>Open Sales Order Lines by Product</h1>
+  <p class="sub">Pending delivery from confirmed sales orders — read-only SQL report.</p>
+
+  <img class="shot" src="banner.png" alt="Open Sales Order Lines by Product banner"/>
+
+  <h2>Overview</h2>
+  <p>
+    See all sales order lines in <strong>Sale</strong> state where ordered minus delivered quantity
+    is still greater than zero. Filter by customer and product from the search panel.
+  </p>
+
+  <h2>Screenshots</h2>
+  <img class="shot" src="screen_01.png" alt="Report list and quantities"/>
+  <img class="shot" src="screen_02.png" alt="Search panel and filters"/>
+  <img class="shot" src="screen_03.png" alt="Pivot or graph analysis"/>
+
+  <h2>Technical</h2>
+  <ul>
+    <li>Read-only; no stock moves from this screen.</li>
+    <li>Excludes down payments, section/note lines, lines without product.</li>
+    <li>Depends on <strong>sale_management</strong> and <strong>stock</strong>.</li>
+  </ul>
+</body>
+</html>

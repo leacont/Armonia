@@ -1,44 +1,37 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Open Sales Order Lines by Product",
-    "version": "19.0.1.1.1",
+    "version": "19.0.1.1.4",
     "category": "Sales/Reporting",
     "summary": "Open Sales Order Lines by Product: pending quantities from confirmed orders, with filters by product and customer.",
     "description": """
-<section class="oe_container">
-    <div class="oe_row oe_spaced">
-        <h2 class="oe_slogan" style="color:#714B67;">Open Sales Order Lines by Product</h2>
-        <h3 class="oe_slogan">Pending delivery from confirmed sales orders</h3>
-        <div class="oe_span12 text-justify oe_mt32">
-            <p>
-                Read-only report of sales order lines in state <strong>Sale</strong> where
-                <strong>ordered quantity minus delivered quantity</strong> is still greater than zero.
-                Use it to see what remains to ship, by product and customer, without opening each order.
-            </p>
-        </div>
-    </div>
-</section>
-<section class="oe_container oe_dark">
-    <div class="oe_row oe_spaced">
-        <h3>What you get</h3>
-        <ul>
-            <li>List, pivot, graph, and form views on one SQL-backed model (fast on large data).</li>
-            <li>Columns for order date, sales order, customer, product, ordered / delivered / pending qty, unit price, pending amount, currency, UoM.</li>
-            <li>Search panel by customer and product (list, pivot, graph).</li>
-            <li>Group by day, week, month, year, product, or customer.</li>
-        </ul>
-    </div>
-</section>
-<section class="oe_container">
-    <div class="oe_row oe_spaced">
-        <h3>Technical notes</h3>
-        <ul>
-            <li>Read-only; no stock moves are created from this screen.</li>
-            <li>Confirmed orders only; excludes down payments, section/note lines, and lines without a product.</li>
-            <li>Requires <strong>Sales</strong> and <strong>Inventory</strong> (stock user group for the menu).</li>
-        </ul>
-    </div>
-</section>
+Open Sales Order Lines by Product
+=================================
+
+Pending delivery from confirmed sales orders.
+
+Read-only report of sales order lines in Sale state where ordered quantity
+minus delivered quantity is still greater than zero. Use it to see what
+remains to ship, by product and customer, without opening each order.
+
+What you get
+------------
+- List, pivot, graph, and form views on one SQL-backed model (fast on large data).
+- Columns: order date, sales order, customer, product, ordered / delivered / pending qty, unit price, pending amount, currency, UoM.
+- Search panel by customer and product (list, pivot, graph).
+- Group by day, week, month, year, product, or customer.
+
+Technical notes
+---------------
+- Read-only; no stock moves are created from this screen.
+- Confirmed orders only; excludes down payments, section/note lines, and lines without a product.
+- Depends on sale_management and stock. Menu is visible to Inventory users (stock user group).
+
+Visuals
+-------
+Icon, banner, and screenshots (screen_01..03) live under static/description/.
+On your own Odoo server, Apps uses index.html there for the full layout with images.
+Odoo.com App Store listing does not render HTML from this field; upload images there separately if needed.
 """,
     "author": "Armonia",
     "website": "https://www.armonia.com.ar",
