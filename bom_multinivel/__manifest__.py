@@ -1,24 +1,23 @@
 # -*- coding: utf-8 -*-
-# No auto-instalación: instalar manualmente desde Apps (requiere mrp + sale). Odoo 19.
+# Not auto-installed: install manually from Apps (requires Manufacturing and Sales). Odoo 19.
 {
-    "name": "BOM multinivel",
-    "version": "19.0.1.0.1",
-    "summary": "[Odoo 19] Project number y explosión multinivel de MOs al confirmar",
+    "name": "Multilevel BOM",
+    "version": "19.0.1.0.3",
+    "summary": "[Odoo 19] Project number and multilevel manufacturing order explosion on confirm",
     "description": """
-Odoo 19.0 — Requiere servidor en rama / versión 19.0.
+Odoo 19.0 — Requires a 19.0 server / branch.
 
-Unifica la lógica de:
-- Secuencia y herencia de Project Number en mrp.production (MO raíz e hijas por origin).
-- Propagación recursiva al confirmar la MO: por cada línea de la LdM busca una LdM de tipo
-  fabricación (normal) del componente y crea la MO hija; hasta 25 niveles; omite subcontratación
-  y líneas saltadas por variantes (_skip_bom_line). Usa el mismo criterio de búsqueda de LdM
-  que la MO estándar (empresa, tipo de operación, active_test).
+Features:
+- Sequence and inheritance of Project Number on manufacturing orders (root MO and children linked by origin).
+- Recursive propagation when confirming an MO: for each BoM line, finds a manufacturing BoM for the component
+  (normal type) or expands phantom kits; creates child MOs up to 25 levels; skips subcontracting and lines
+  ignored by variants (_skip_bom_line). BoM lookup matches standard MO behaviour (company, operation type, active_test).
 
-Si también tiene instalado otro módulo que confirme y genere MO hijas (p. ej. Mass Router
-Production Scheduler), puede haber doble lógica: use solo uno o unifique dependencias.
+If another module also creates child MOs on confirm (e.g. a mass router scheduler), you may get overlapping logic:
+use only one approach or align dependencies.
     """,
     "category": "Manufacturing",
-    "author": "FCS / Leandro Contino",
+    "author": "Armonia",
     "license": "LGPL-3",
     "auto_install": False,
     "application": True,

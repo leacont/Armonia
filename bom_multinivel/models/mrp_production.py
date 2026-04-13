@@ -33,22 +33,23 @@ class MrpProduction(models.Model):
                 if not seq:
                     raise UserError(
                         _(
-                            "No se pudo obtener el número de proyecto: falta la secuencia con código "
-                            "'project.number'. Actualice el módulo BOM multinivel o cree la secuencia."
+                            "Could not get a project number: sequence with code 'project.number' is missing. "
+                            "Upgrade the Multilevel BOM module or create the sequence."
                         )
                     )
                 vals["project_number"] = seq
         return super().create(vals_list)
 
     def action_propagate_router(self):
+        """Manual propagation entry point (e.g. server actions)."""
         for mo in self:
             if not mo.bom_id:
-                raise UserError(_("La MO %s no tiene BOM asignada.") % mo.name)
+                raise UserError(_("Manufacturing order %s has no bill of materials.") % mo.name)
             mo._propagate_children(mo, current_level=1, start_base=mo.date_start)
         return True
 
-    def _bom_multinivel_find(self, product, bom_type=False):
-        """Búsqueda alineada a la MO: empresa, tipo de operación. bom_type False = cualquier tipo."""
+    def _multilevel_bom_find(self, product, bom_type=False):
+        """BoM lookup aligned with MO rules: company, operation type; bom_type False = any type."""
         self.ensure_one()
         return self.env["mrp.bom"].with_context(active_test=True)._bom_find(
             product,
@@ -57,14 +58,14 @@ class MrpProduction(models.Model):
             bom_type=bom_type,
         )
 
-    def _bom_multinivel_resolve(self, product):
-        """Prefiere LdM normal; si no hay, usa la que devuelva Odoo (p. ej. phantom)."""
+    def _multilevel_bom_resolve(self, product):
+        """Prefer a normal manufacturing BoM; otherwise use Odoo resolution (e.g. phantom)."""
         self.ensure_one()
-        m = self._bom_multinivel_find(product, bom_type="normal")
+        m = self._multilevel_bom_find(product, bom_type="normal")
         b = m.get(product)
         if b and b.ids:
             return b
-        m2 = self._bom_multinivel_find(product, bom_type=False)
+        m2 = self._multilevel_bom_find(product, bom_type=False)
         b2 = m2.get(product) if m2 else None
         return b2 if (b2 and b2.ids) else self.env["mrp.bom"]
 
@@ -78,21 +79,21 @@ class MrpProduction(models.Model):
         start_base,
     ):
         """
-        Crea MO de fabricación para `product` si tiene LdM de tipo fabricación, o expande
-        LdM phantom (kit) sin crear MO del kit. Devuelve MO recién creadas en esta rama.
+        Create a manufacturing order for ``product`` when it has a manufacturing BoM, or expand
+        a phantom (kit) BoM without creating an MO for the kit. Returns MOs created in this branch.
         """
         created = self.env["mrp.production"]
         if not product or qty_needed <= 0:
             return created
 
-        sub_bom = parent_mo._bom_multinivel_resolve(product)
+        sub_bom = parent_mo._multilevel_bom_resolve(product)
         if not sub_bom or not sub_bom.ids:
             return created
 
         btype = getattr(sub_bom, "type", False)
         if btype in ("subcontract", "subcontracting"):
             _logger.info(
-                "BOM multinivel: subcontratación omitida para %s (MO %s)",
+                "Multilevel BOM: skipping subcontracting for %s (MO %s)",
                 product.display_name,
                 parent_mo.name,
             )
@@ -157,13 +158,13 @@ class MrpProduction(models.Model):
         Mo = self.env["mrp.production"]
         child = Mo.create(vals)
         child.with_context(**{SKIP_CONTEXT: True}).action_confirm()
-        _logger.info("BOM multinivel: MO hija %s ← %s", child.name, parent_mo.name)
+        _logger.info("Multilevel BOM: child MO %s from %s", child.name, parent_mo.name)
         return child
 
     def _propagate_children(self, parent_mo, current_level, start_base=None):
         if current_level > self.MAX_PROPAGATION_LEVEL:
             _logger.warning(
-                "BOM multinivel: máximo nivel (%s) en MO %s",
+                "Multilevel BOM: max depth (%s) reached for MO %s",
                 self.MAX_PROPAGATION_LEVEL,
                 parent_mo.name,
             )
@@ -214,6 +215,6 @@ class MrpProduction(models.Model):
             return res
         for mo in self:
             if not mo.bom_id:
-                raise UserError(_("La MO %s no tiene BOM asignada.") % mo.name)
+                raise UserError(_("Manufacturing order %s has no bill of materials.") % mo.name)
             mo._propagate_children(mo, current_level=1, start_base=mo.date_start)
         return res
