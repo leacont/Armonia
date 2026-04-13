@@ -1,90 +1,44 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Open Sales Order Lines by Product",
-    "version": "19.0.1.1.0",
+    "version": "19.0.1.1.1",
     "category": "Sales/Reporting",
     "summary": "Open Sales Order Lines by Product: pending quantities from confirmed orders, with filters by product and customer.",
     "description": """
-<h1 style="font-size:36px;">Open Sales Order Lines by Product</h1>
-
-<p style="font-size:16px;">
-Get a clear and centralized view of all products that are still pending delivery from confirmed Sales Orders.
-</p>
-
-<img src="/open_sales_order_by_product/static/description/banner.png" style="width:100%; border-radius:12px;"/>
-
-<hr/>
-
-<h2>📊 See All Pending Items in One Place</h2>
-
-<p>
-This report shows all Sales Order lines where there is still quantity pending delivery.
-</p>
-
-<img src="/open_sales_order_by_product/static/description/screen_01.png" style="width:100%; border-radius:10px;"/>
-
-<ul>
-<li>✔ Ordered vs Delivered vs Pending quantities</li>
-<li>✔ Pending quantity highlighted clearly</li>
-<li>✔ Pending amount calculation</li>
-</ul>
-
-<hr/>
-
-<h2>🔎 Filter by Customer or Product</h2>
-
-<p>
-Quickly filter the report using the built-in search panel to focus on specific customers or products.
-</p>
-
-<img src="/open_sales_order_by_product/static/description/screen_02.png" style="width:100%; border-radius:10px;"/>
-
-<ul>
-<li>✔ Filter by customer</li>
-<li>✔ Filter by product</li>
-<li>✔ Instant recalculation of totals</li>
-</ul>
-
-<hr/>
-
-<h2>📄 From Sales Orders to Actionable Report</h2>
-
-<p>
-Instead of reviewing Sales Orders one by one, this module consolidates all pending delivery lines into a single report.
-</p>
-
-<img src="/open_sales_order_by_product/static/description/screen_03.png" style="width:100%; border-radius:10px;"/>
-
-<ul>
-<li>✔ Identify what still needs to be delivered</li>
-<li>✔ Understand customer commitments</li>
-<li>✔ Improve follow-up and delivery planning</li>
-</ul>
-
-<hr/>
-
-<h2>📈 Analysis & Reporting</h2>
-
-<p>
-Use list, pivot, and graph views to analyze open quantities by product or customer.
-</p>
-
-<ul>
-<li>✔ Group by product</li>
-<li>✔ Group by customer</li>
-<li>✔ Identify high pending volumes</li>
-</ul>
-
-<hr/>
-
-<h2>⚙️ Technical Details</h2>
-
-<ul>
-<li>✔ Read-only SQL-based report</li>
-<li>✔ Includes confirmed Sales Orders only</li>
-<li>✔ Excludes down payments and non-product lines</li>
-<li>✔ Shows only lines with pending delivery quantity</li>
-</ul>
+<section class="oe_container">
+    <div class="oe_row oe_spaced">
+        <h2 class="oe_slogan" style="color:#714B67;">Open Sales Order Lines by Product</h2>
+        <h3 class="oe_slogan">Pending delivery from confirmed sales orders</h3>
+        <div class="oe_span12 text-justify oe_mt32">
+            <p>
+                Read-only report of sales order lines in state <strong>Sale</strong> where
+                <strong>ordered quantity minus delivered quantity</strong> is still greater than zero.
+                Use it to see what remains to ship, by product and customer, without opening each order.
+            </p>
+        </div>
+    </div>
+</section>
+<section class="oe_container oe_dark">
+    <div class="oe_row oe_spaced">
+        <h3>What you get</h3>
+        <ul>
+            <li>List, pivot, graph, and form views on one SQL-backed model (fast on large data).</li>
+            <li>Columns for order date, sales order, customer, product, ordered / delivered / pending qty, unit price, pending amount, currency, UoM.</li>
+            <li>Search panel by customer and product (list, pivot, graph).</li>
+            <li>Group by day, week, month, year, product, or customer.</li>
+        </ul>
+    </div>
+</section>
+<section class="oe_container">
+    <div class="oe_row oe_spaced">
+        <h3>Technical notes</h3>
+        <ul>
+            <li>Read-only; no stock moves are created from this screen.</li>
+            <li>Confirmed orders only; excludes down payments, section/note lines, and lines without a product.</li>
+            <li>Requires <strong>Sales</strong> and <strong>Inventory</strong> (stock user group for the menu).</li>
+        </ul>
+    </div>
+</section>
 """,
     "author": "Armonia",
     "website": "https://www.armonia.com.ar",
