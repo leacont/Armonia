@@ -43,8 +43,8 @@ Business value
         "wizards/stock_scrap_unscrap_wizard_views.xml",
     ],
     "images": [
-        "static/description/icon.svg",
-        "static/description/banner.svg",
+        "static/description/banner.png",
+        "static/description/icon.png",
     ],
     "installable": True,
     "application": False,
