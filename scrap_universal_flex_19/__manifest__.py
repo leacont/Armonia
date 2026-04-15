@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 {
     "name": "Multi Scrap & Unscrap Management",
     "version": "19.0.3.0.0",
@@ -33,7 +33,7 @@ Business value
     "author": "Armonia",
     "website": "",
     "license": "OPL-1",
-    "price": 19.9,
+    "price": 39.9,
     "currency": "USD",
     "depends": ["stock"],
     "data": [
@@ -50,3 +50,4 @@ Business value
     "application": False,
     "auto_install": False,
 }
+
