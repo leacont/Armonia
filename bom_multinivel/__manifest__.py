@@ -42,7 +42,7 @@ This module **confirms the parent MO and automatically creates and confirms chil
     "sequence": 20,
     "depends": ["mrp", "sale"],
     "images": [
-        "static/description/banner.png",
+        "static/description/cover.png",
         "static/description/icon.png",
     ],
     "data": [
