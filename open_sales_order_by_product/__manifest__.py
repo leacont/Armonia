@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 {
     "name": "Open Sales Order Report",
     "version": "19.0.1.1.5",
@@ -36,7 +36,7 @@ Odoo.com App Store listing does not render HTML from this field; upload images t
     "author": "Armonia",
     "website": "https://www.armonia.com.ar",
     "license": "OPL-1",
-    "price": 5.00,
+    "price": 14.0,
     "currency": "USD",
     "depends": ["sale_management", "stock"],
     "data": [
@@ -51,3 +51,4 @@ Odoo.com App Store listing does not render HTML from this field; upload images t
     "application": False,
     "auto_install": False,
 }
+

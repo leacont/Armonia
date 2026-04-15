@@ -1,38 +1,58 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Open Sales Order Report</title>
   <style>
-    body { font-family: system-ui, sans-serif; color: #333; max-width: 900px; margin: 0 auto; padding: 16px; }
-    h1 { color: #714B67; font-size: 1.75rem; margin-bottom: 0.25rem; }
-    .sub { color: #666; margin-bottom: 1.5rem; }
-    h2 { font-size: 1.1rem; margin-top: 1.75rem; border-bottom: 1px solid #ddd; padding-bottom: 0.25rem; }
-    ul { line-height: 1.5; }
-    .shot { width: 100%; border-radius: 8px; border: 1px solid #e0e0e0; margin: 12px 0; }
+    body { font-family: Arial, Helvetica, sans-serif; color: #2c2c2c; max-width: 940px; margin: 0 auto; padding: 18px; line-height: 1.55; }
+    h1 { color: #714b67; margin: 0 0 4px 0; font-size: 32px; }
+    h2 { color: #714b67; margin: 24px 0 10px 0; font-size: 22px; }
+    p { margin: 8px 0; }
+    ul { margin: 8px 0 0 18px; }
+    li { margin: 6px 0; }
+    .sub { color: #666; margin-top: 0; }
+    .box { background: #faf8fb; border: 1px solid #e7e1e8; border-radius: 12px; padding: 12px 14px; margin: 12px 0; }
+    .banner { width: 100%; border: 1px solid #dfd8e1; border-radius: 12px; margin: 14px 0 18px 0; display: block; }
+    .shot { width: 100%; border: 1px solid #e0e0e0; border-radius: 10px; margin: 10px 0; display: block; }
+    .badge { display: inline-block; margin: 0 8px 8px 0; background: #f4edf5; border: 1px solid #e3d6e6; color: #714b67; border-radius: 999px; padding: 4px 10px; font-size: 12px; font-weight: 600; }
   </style>
 </head>
 <body>
   <h1>Open Sales Order Report</h1>
-  <p class="sub">Pending delivery from confirmed sales orders — read-only SQL report.</p>
+  <p class="sub">Fast visibility into pending deliveries from confirmed sales orders.</p>
 
-  <img class="shot" src="banner.png" alt="Open Sales Order Report — banner"/>
+  <div>
+    <span class="badge">Odoo 19</span>
+    <span class="badge">Sales</span>
+    <span class="badge">Inventory</span>
+    <span class="badge">Armonia</span>
+  </div>
 
-  <h2>Overview</h2>
-  <p>
-    See all sales order lines in <strong>Sale</strong> state where ordered minus delivered quantity
-    is still greater than zero. Filter by customer and product from the search panel.
-  </p>
+  <img class="banner" src="banner.png" alt="Open Sales Order Report banner"/>
+
+  <h2>Why teams use it</h2>
+  <div class="box">
+    Instead of opening order by order, this report centralizes every line that still has quantity to deliver. Operations and sales teams can prioritize fulfillment instantly.
+  </div>
+
+  <h2>What you see</h2>
+  <ul>
+    <li>Confirmed order lines with pending quantity greater than zero.</li>
+    <li>Customer, product, ordered, delivered, and pending quantities.</li>
+    <li>Pricing and pending amount for quick commercial impact checks.</li>
+    <li>Read-only SQL report for speed and safety.</li>
+  </ul>
 
   <h2>Screenshots</h2>
-  <img class="shot" src="screen_01.png" alt="Report list and quantities"/>
-  <img class="shot" src="screen_02.png" alt="Search panel and filters"/>
-  <img class="shot" src="screen_03.png" alt="Pivot or graph analysis"/>
+  <img class="shot" src="screen_01.png" alt="Open sales report list"/>
+  <img class="shot" src="screen_02.png" alt="Search and grouping options"/>
+  <img class="shot" src="screen_03.png" alt="Pivot and graph analysis"/>
 
-  <h2>Technical</h2>
+  <h2>Technical notes</h2>
   <ul>
-    <li>Read-only; no stock moves from this screen.</li>
-    <li>Excludes down payments, section/note lines, lines without product.</li>
+    <li>No stock moves are created from this screen.</li>
+    <li>Excludes down payments, sections/notes, and lines without product.</li>
     <li>Depends on <strong>sale_management</strong> and <strong>stock</strong>.</li>
   </ul>
 </body>
