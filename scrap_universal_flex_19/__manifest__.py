@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 {
     "name": "Multi Scrap & Unscrap Management",
     "version": "19.0.3.0.0",
