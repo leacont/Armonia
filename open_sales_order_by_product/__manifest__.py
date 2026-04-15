@@ -52,3 +52,4 @@ Odoo.com App Store listing does not render HTML from this field; upload images t
     "auto_install": False,
 }
 
+
