@@ -30,7 +30,7 @@ This module **confirms the parent MO and automatically creates and confirms chil
 
 **Note:** If another module also auto-creates child MOs on confirm, you may need to align processes to prevent duplicate logic.
 
-**Support:** le.contino@gmail.com — **Armonia**
+**Support:** armonia.odoo@gmail.com — **Armonia**
     """,
     "author": "Armonia",
     "website": "",
