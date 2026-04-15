@@ -44,8 +44,8 @@ Odoo.com App Store listing does not render HTML from this field; upload images t
         "views/open_sales_report_views.xml",
     ],
     "images": [
+        "static/description/cover.png",
         "static/description/icon.png",
-        "static/description/banner.png",
     ],
     "installable": True,
     "application": False,
