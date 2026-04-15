@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 {
     "name": "Open Sales Order Report",
     "version": "19.0.1.1.5",
