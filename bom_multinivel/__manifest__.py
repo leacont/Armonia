@@ -1,29 +1,50 @@
 # -*- coding: utf-8 -*-
-# Not auto-installed: install manually from Apps (requires Manufacturing and Sales). Odoo 19.
+# Odoo 19 — technical name: bom_multinivel. For Odoo 18 use bom_multinivel_18.
 {
     "name": "Multi-Level BoM Explorer",
-    "version": "19.0.1.0.4",
-    "summary": "[Odoo 19] Advanced manufacturing automation — project traceability and multilevel MO explosion",
+    "version": "19.0.2.0.0",
+    "category": "Manufacturing/Manufacturing",
+    "summary": "Automatic multilevel MO explosion, phantom kit expansion, project numbering, and traceable child MOs—built for real BoM depth.",
     "description": """
-Odoo 19.0 — Requires a 19.0 server / branch.
+Multi-Level BoM Explorer (Odoo 19.0)
+====================================
 
-Features:
-- Sequence and inheritance of Project Number on manufacturing orders (root MO and children linked by origin).
-- Recursive propagation when confirming an MO: for each BoM line, finds a manufacturing BoM for the component
-  (normal type) or expands phantom kits; creates child MOs up to 25 levels; skips subcontracting and lines
-  ignored by variants (_skip_bom_line). BoM lookup matches standard MO behaviour (company, operation type, active_test).
+**Manufacturing orders that match how your product is actually built.**
 
-If another module also creates child MOs on confirm (e.g. a mass router scheduler), you may get overlapping logic:
-use only one approach or align dependencies.
+When a finished product has sub-assemblies—and those sub-assemblies have their own BoMs—creating every MO by hand is slow and error-prone.
+This module **confirms the parent MO and automatically creates and confirms child MOs** down the BoM tree, using Odoo’s standard BoM lookup
+(company, operation type, active BoMs) and respecting variant line skips.
+
+**Highlights**
+------------
+* **Recursive propagation on MO confirm** — for each BoM line, if the component has a manufacturing BoM, a child MO is created, confirmed, and the process continues.
+* **Phantom (kit) BoMs** — exploded without generating a kit MO; components are processed at the right quantities.
+* **Subcontracting BoMs** — intentionally skipped to avoid conflicting subcontract flows.
+* **Safety** — maximum depth (25 levels) with clear logging when the cap is hit.
+* **Project number** — automatic sequence (`project.number`) plus inheritance on child MOs tied through `origin`.
+* **Operational continuity** — router/job/sales-order related fields on the parent are copied to generated children when those fields exist on your database.
+
+**Dependencies:** Manufacturing (`mrp`), Sales (`sale`).
+
+**Odoo 18 edition:** install the module ``bom_multinivel_18`` on Odoo 18 servers only.
+
+**Note:** If another module also auto-creates child MOs on confirm, you may need to align processes to prevent duplicate logic.
+
+**Support:** le.contino@gmail.com — **Armonia**
     """,
-    "category": "Manufacturing",
     "author": "Armonia",
-    "license": "LGPL-3",
+    "website": "",
+    "license": "OPL-1",
+    "price": 29.9,
+    "currency": "USD",
     "auto_install": False,
     "application": True,
     "sequence": 20,
     "depends": ["mrp", "sale"],
-    "images": ["static/description/main_screenshot.png"],
+    "images": [
+        "static/description/banner.png",
+        "static/description/icon.png",
+    ],
     "data": [
         "data/project_number_sequence.xml",
         "views/mrp_production_views.xml",
