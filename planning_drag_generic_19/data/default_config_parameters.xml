@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+  <record id="icp_planning_drag_sync_reservation" model="ir.config_parameter">
+    <field name="key">planning_drag_generic_19.sync_reservation_with_sequence</field>
+    <field name="value">True</field>
+  </record>
+  <record id="icp_planning_drag_reservation_scope" model="ir.config_parameter">
+    <field name="key">planning_drag_generic_19.reservation_sync_scope</field>
+    <field name="value">mo_tree</field>
+  </record>
+  <record id="icp_planning_drag_reservation_delta" model="ir.config_parameter">
+    <field name="key">planning_drag_generic_19.reservation_rank_delta_minutes</field>
+    <field name="value">5</field>
+  </record>
+  <record id="icp_planning_drag_reservation_mo_priority" model="ir.config_parameter">
+    <field name="key">planning_drag_generic_19.reservation_mo_priority_first</field>
+    <field name="value">True</field>
+  </record>
+  <record id="icp_planning_drag_cron_replan_today" model="ir.config_parameter">
+    <field name="key">planning_drag_generic_19.cron_replan_today</field>
+    <field name="value">False</field>
+  </record>
+  <record id="icp_planning_drag_use_workcenter_calendar" model="ir.config_parameter">
+    <field name="key">planning_drag_generic_19.use_workcenter_calendar</field>
+    <field name="value">True</field>
+  </record>
+</odoo>

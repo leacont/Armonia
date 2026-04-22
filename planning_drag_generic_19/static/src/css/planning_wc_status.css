@@ -1,0 +1,169 @@
+/* Planning Sequencer / Completed (mrp.planning.order list): center columns */
+.o_planning_drag_planning_order_list .o_list_table thead th,
+.o_planning_drag_planning_order_list .o_list_table tbody td {
+    text-align: center !important;
+}
+
+.o_planning_drag_planning_order_list .o_field_widget,
+.o_planning_drag_planning_order_list .o_field_cell .o_field_widget {
+    justify-content: center;
+}
+
+/* Planning Sequencer: workcenter slot status (mrp.planning.order wc_col_*) */
+.o_planning_drag_wc_sig {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.42rem;
+    height: 1.42rem;
+    min-width: 1.42rem;
+    min-height: 1.42rem;
+    padding: 0;
+    border-radius: 999px;
+    font-size: 0.68rem;
+    line-height: 0;
+    box-sizing: border-box;
+    font-weight: 700;
+    vertical-align: middle;
+    flex-shrink: 0;
+    overflow: hidden;
+    text-align: center;
+}
+
+.o_planning_drag_wc_pending {
+    background-color: #ffc107;
+    color: #3d2f00;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+    font-size: 0.58rem;
+}
+
+.o_planning_drag_wc_progress {
+    background-color: #0d6efd;
+    color: #fff;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+.o_planning_drag_wc_done {
+    background-color: #198754;
+    color: #fff;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+.o_planning_drag_wc_cancelled {
+    background-color: #dc3545;
+    color: #fff;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+
+.o_planning_drag_wc_na {
+    background-color: #e9ecef;
+    color: #868e96;
+    font-weight: 500;
+    font-size: 0.62rem;
+}
+
+.o_list_view .o_planning_wc_cell {
+    vertical-align: middle;
+}
+
+/* Legend under Planning Sequencer table (injected by planning_list_legend.js) */
+.o_planning_drag_legend_compact {
+    font-size: 0.68rem;
+    line-height: 1.25;
+}
+
+.o_planning_drag_legend_items {
+    align-items: center !important;
+}
+
+.o_planning_drag_legend_items > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    line-height: 1;
+}
+
+.o_planning_drag_legend_label {
+    font-size: 0.68rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+}
+
+.o_planning_drag_legend_bar .o_planning_drag_wc_sig {
+    width: 1.32rem;
+    height: 1.32rem;
+    min-width: 1.32rem;
+    min-height: 1.32rem;
+    font-size: 0.64rem;
+    line-height: 0;
+}
+
+/* Today report kanban */
+.o_planning_report_kanban .o_planning_report_card {
+    border-radius: 12px;
+    border-left: 6px solid #dc3545;
+    background: linear-gradient(180deg, #ffffff 0%, #fafbfc 100%);
+}
+
+.o_planning_report_kanban .o_planning_report_card.o_state_warning {
+    border-left-color: #f39c12;
+}
+
+.o_planning_report_kanban .o_planning_report_card.o_state_success {
+    border-left-color: #198754;
+}
+
+.o_planning_report_head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.45rem;
+}
+
+.o_planning_report_kpi {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.35rem;
+    font-size: 0.88rem;
+    margin-bottom: 0.35rem;
+}
+
+.o_planning_report_meta {
+    display: flex;
+    gap: 0.8rem;
+    font-size: 0.8rem;
+    color: #4b5563;
+    margin-bottom: 0.35rem;
+}
+
+.o_planning_report_orders .o_orders_title {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.2rem;
+}
+
+.o_planning_report_orders pre {
+    white-space: pre-wrap;
+    margin: 0;
+    font-size: 0.76rem;
+    line-height: 1.25;
+    color: #374151;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 0.4rem 0.5rem;
+}
+
+.o_kpi_label {
+    color: #6b7280;
+    margin-right: 0.2rem;
+}
+
+/* Rush priority (planning + workcenter queue) */
+.o_planning_drag_rush_col {
+    font-size: 1.15rem;
+    line-height: 1;
+    color: #c0392b;
+    font-weight: 700;
+}

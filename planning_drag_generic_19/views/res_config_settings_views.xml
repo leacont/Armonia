@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_res_config_settings_planning_drag_generic_19" model="ir.ui.view">
+    <field name="name">res.config.settings.view.form.planning.drag.generic.19</field>
+    <field name="model">res.config.settings</field>
+    <field name="inherit_id" ref="mrp.res_config_settings_view_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//form" position="inside">
+        <app string="Manufacturing Planning" name="planning_drag_generic_19" groups="base.group_system">
+          <block title="Scheduling Mode">
+            <setting string="Scheduling mode"
+                     help="Manual: run scheduling from the button. Automatic: run scheduling from cron.">
+              <field name="planning_drag_scheduling_mode"/>
+            </setting>
+            <setting string="Cron replan from now"
+                     help="In Automatic mode, every cron execution starts planning from now/today.">
+              <field name="planning_drag_cron_replan_today"/>
+            </setting>
+            <setting string="Use workcenter calendar"
+                     help="Apply operation durations on available workcenter calendar time (attendances/leaves).">
+              <field name="planning_drag_use_workcenter_calendar"/>
+            </setting>
+          </block>
+          <block title="Work centers">
+            <setting
+                string="Refresh planning columns"
+                help="Updates planning list headers from active work centers (current company, same order as Manufacturing &gt; Work Centers, up to 16 columns). Use after adding or reordering work centers. Re-open the Planning list or press F5 if needed.">
+              <button name="action_refresh_planning_workcenters" type="object" string="Refresh work centers" class="btn-primary"/>
+            </setting>
+          </block>
+          <block title="Reservations &amp; priority">
+            <setting string="Sync reservations with planning"
+                     help="Re-assign component stock in the same order as the planning list (after unreserve).">
+              <field name="planning_drag_sync_reservation"/>
+            </setting>
+            <setting string="Reservation scope" invisible="not planning_drag_sync_reservation">
+              <field name="planning_drag_reservation_scope"/>
+            </setting>
+            <setting string="Rank spacing (minutes)" invisible="not planning_drag_sync_reservation">
+              <field name="planning_drag_reservation_delta"/>
+            </setting>
+            <setting string="First row = Urgent MO" invisible="not planning_drag_sync_reservation">
+              <field name="planning_drag_reservation_mo_priority"/>
+            </setting>
+          </block>
+        </app>
+      </xpath>
+    </field>
+  </record>
+
+  <record id="action_planning_drag_generic_settings" model="ir.actions.act_window">
+    <field name="name">Planning Settings</field>
+    <field name="res_model">res.config.settings</field>
+    <field name="view_mode">form</field>
+    <field name="target">current</field>
+    <field name="context">{'module': 'planning_drag_generic_19'}</field>
+  </record>
+</odoo>

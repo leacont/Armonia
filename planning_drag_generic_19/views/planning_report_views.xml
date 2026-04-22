@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_mrp_planning_report_list" model="ir.ui.view">
+    <field name="name">mrp.planning.report.list</field>
+    <field name="model">mrp.planning.report</field>
+    <field name="arch" type="xml">
+      <list string="Planning Report (Today)" create="false" edit="false" delete="false" default_order="completion_pct desc">
+        <header>
+          <button name="refresh_from_live_data" type="object" string="Refresh report" class="btn-secondary"/>
+        </header>
+        <field name="report_date"/>
+        <field name="report_datetime"/>
+        <field name="workcenter_id"/>
+        <field name="planning_order_count"/>
+        <field name="status"/>
+        <field name="planned_qty"/>
+        <field name="produced_qty"/>
+        <field name="completion_label" string="Completion"/>
+        <field name="pending_wo_count"/>
+        <field name="done_wo_count"/>
+        <field name="next_planned_datetime"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="view_mrp_planning_report_kanban" model="ir.ui.view">
+    <field name="name">mrp.planning.report.kanban</field>
+    <field name="model">mrp.planning.report</field>
+    <field name="arch" type="xml">
+      <kanban class="o_planning_report_kanban" create="false" delete="false" default_order="completion_pct desc">
+        <field name="workcenter_id"/>
+        <field name="report_date"/>
+        <field name="planning_order_count"/>
+        <field name="planned_qty"/>
+        <field name="produced_qty"/>
+        <field name="completion_label"/>
+        <field name="completion_pct"/>
+        <field name="progress_state"/>
+        <field name="status"/>
+        <field name="pending_wo_count"/>
+        <field name="done_wo_count"/>
+        <field name="next_planned_datetime"/>
+        <field name="order_lines_text"/>
+        <templates>
+          <t t-name="card">
+            <div t-attf-class="oe_kanban_global_click o_kanban_record o_planning_report_card o_state_#{record.progress_state.raw_value or 'danger'}">
+              <div class="o_planning_report_head">
+                <div class="o_planning_report_wc">
+                  <strong><field name="workcenter_id"/></strong>
+                </div>
+                <span class="badge text-bg-light">
+                  <field name="completion_label"/>
+                </span>
+              </div>
+              <div class="o_planning_report_kpi">
+                <div><span class="o_kpi_label">Planned</span> <strong><field name="planned_qty"/></strong></div>
+                <div><span class="o_kpi_label">Produced</span> <strong><field name="produced_qty"/></strong></div>
+                <div><span class="o_kpi_label">Orders</span> <strong><field name="planning_order_count"/></strong></div>
+              </div>
+              <div class="o_planning_report_meta">
+                <span>Pending: <field name="pending_wo_count"/></span>
+                <span>Done: <field name="done_wo_count"/></span>
+              </div>
+              <div class="o_planning_report_orders">
+                <div class="o_orders_title">Today orders (Produced / Planned)</div>
+                <pre><field name="order_lines_text"/></pre>
+              </div>
+            </div>
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+  <record id="view_mrp_planning_report_pivot" model="ir.ui.view">
+    <field name="name">mrp.planning.report.pivot</field>
+    <field name="model">mrp.planning.report</field>
+    <field name="arch" type="xml">
+      <pivot string="Planning Report (Today)">
+        <field name="workcenter_id" type="row"/>
+        <field name="status" type="row"/>
+        <field name="report_date" type="col"/>
+        <field name="planning_order_count" type="measure"/>
+        <field name="planned_qty" type="measure"/>
+        <field name="produced_qty" type="measure"/>
+        <field name="completion_pct" type="measure"/>
+        <field name="pending_wo_count" type="measure"/>
+        <field name="done_wo_count" type="measure"/>
+      </pivot>
+    </field>
+  </record>
+
+  <record id="view_mrp_planning_report_graph" model="ir.ui.view">
+    <field name="name">mrp.planning.report.graph</field>
+    <field name="model">mrp.planning.report</field>
+    <field name="arch" type="xml">
+      <graph string="Planning Report (Today)" type="bar" stacked="True">
+        <field name="workcenter_id"/>
+        <field name="planned_qty" type="measure"/>
+        <field name="produced_qty" type="measure"/>
+      </graph>
+    </field>
+  </record>
+
+  <record id="view_mrp_planning_report_search" model="ir.ui.view">
+    <field name="name">mrp.planning.report.search</field>
+    <field name="model">mrp.planning.report</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="workcenter_id"/>
+        <field name="status"/>
+        <field name="report_datetime"/>
+        <field name="report_date"/>
+        <separator/>
+        <filter name="today" string="Today" domain="[('report_date', '=', context_today())]"/>
+        <separator/>
+        <filter name="status_pending" string="Pending" domain="[('status','=','pending')]"/>
+        <filter name="status_progress" string="In Progress" domain="[('status','=','progress')]"/>
+        <filter name="status_done" string="Done" domain="[('status','=','done')]"/>
+        <filter name="status_cancelled" string="Cancelled" domain="[('status','=','cancelled')]"/>
+        <separator/>
+        <filter name="group_workcenter" string="Group by Workcenter" context="{'group_by':'workcenter_id'}"/>
+        <filter name="group_status" string="Group by Status" context="{'group_by':'status'}"/>
+      </search>
+    </field>
+  </record>
+
+  <record id="action_mrp_planning_report" model="ir.actions.act_window">
+    <field name="name">Planning Report</field>
+    <field name="res_model">mrp.planning.report</field>
+    <field name="view_mode">kanban,list,pivot,graph</field>
+    <field name="search_view_id" ref="view_mrp_planning_report_search"/>
+    <field name="context">{'search_default_today': 1}</field>
+  </record>
+</odoo>

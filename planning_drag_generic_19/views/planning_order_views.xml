@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_mrp_planning_order_list" model="ir.ui.view">
+    <field name="name">mrp.planning.order.list</field>
+    <field name="model">mrp.planning.order</field>
+    <field name="arch" type="xml">
+      <list string="Planning Sequencer" create="false" delete="false" default_order="sequence asc, id asc" class="o_planning_drag_planning_order_list">
+        <header>
+          <button name="action_apply_schedule_now" type="object" string="Apply schedule now" class="btn-primary"/>
+          <button name="action_archive" type="object" string="Archive" class="btn-secondary"/>
+          <button name="action_unarchive" type="object" string="Unarchive" class="btn-secondary"/>
+        </header>
+        <field name="sequence" widget="handle" class="text-center"/>
+        <field name="planning_rush_icon" string="Rush" class="text-center o_planning_drag_rush_col"/>
+        <field name="planning_is_rush" column_invisible="1"/>
+        <field name="planning_rank" class="text-center"/>
+        <field name="root_production_id" string="Manufacturing Order" class="text-center"/>
+        <field name="product_id" class="text-center"/>
+        <field name="planned_qty" class="text-center"/>
+        <field name="pending_wo_count" class="text-center"/>
+        <field name="current_workcenter_id" class="text-center"/>
+        <field name="planning_wc_slots_used" column_invisible="True"/>
+        <field name="wc_col_1" string="WC 1" widget="html" class="text-center o_planning_wc_cell"/>
+        <field name="wc_col_2" string="WC 2" widget="html" class="text-center o_planning_wc_cell"/>
+        <field name="wc_col_3" string="WC 3" widget="html" class="text-center o_planning_wc_cell"/>
+        <field name="wc_col_4" string="WC 4" widget="html" class="text-center o_planning_wc_cell"/>
+        <field name="wc_col_5" string="WC 5" widget="html" class="text-center o_planning_wc_cell"/>
+        <field name="wc_col_6" string="WC 6" widget="html" class="text-center o_planning_wc_cell"/>
+        <field name="wc_col_7" string="WC 7" widget="html" class="text-center o_planning_wc_cell"/>
+        <field name="wc_col_8" string="WC 8" widget="html" class="text-center o_planning_wc_cell"/>
+        <field name="wc_col_9" string="WC 9" widget="html" class="text-center o_planning_wc_cell"/>
+        <field name="wc_col_10" string="WC 10" widget="html" class="text-center o_planning_wc_cell"/>
+        <field name="wc_col_11" string="WC 11" widget="html" class="text-center o_planning_wc_cell"/>
+        <field name="wc_col_12" string="WC 12" widget="html" class="text-center o_planning_wc_cell"/>
+        <field name="wc_col_13" string="WC 13" widget="html" class="text-center o_planning_wc_cell"/>
+        <field name="wc_col_14" string="WC 14" widget="html" class="text-center o_planning_wc_cell"/>
+        <field name="wc_col_15" string="WC 15" widget="html" class="text-center o_planning_wc_cell"/>
+        <field name="wc_col_16" string="WC 16" widget="html" class="text-center o_planning_wc_cell"/>
+        <field name="active" column_invisible="1"/>
+        <field name="is_closed" column_invisible="1"/>
+        <field name="planning_manual_completed" column_invisible="1"/>
+        <button name="action_set_planning_rush" type="object" string="Rush" icon="fa-bolt" class="btn-link"
+                title="Prioritize this order (only one Rush at a time in open planning)."
+                invisible="planning_is_rush or planning_manual_completed or context.get('planning_rank_closed')"/>
+        <button name="action_clear_planning_rush" type="object" string="Clear" icon="fa-times" class="btn-link"
+                title="Remove Rush priority from this row."
+                invisible="not planning_is_rush or planning_manual_completed or context.get('planning_rank_closed')"/>
+        <button name="action_move_to_planning_completed" type="object" string="Move to completed"
+                class="btn btn-sm btn-secondary text-nowrap"
+                title="Move this order to the Completed list once manufacturing is fully done."
+                invisible="not is_closed or planning_manual_completed or context.get('planning_rank_closed')"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="view_mrp_planning_order_form" model="ir.ui.view">
+    <field name="name">mrp.planning.order.form</field>
+    <field name="model">mrp.planning.order</field>
+    <field name="arch" type="xml">
+      <form string="Planning Order">
+        <header>
+          <button name="action_set_planning_rush" type="object" string="Set Rush" class="btn-primary"
+                  invisible="planning_is_rush or planning_manual_completed"/>
+          <button name="action_clear_planning_rush" type="object" string="Clear Rush" class="btn-secondary"
+                  invisible="not planning_is_rush"/>
+          <button name="action_archive" type="object" string="Archive" class="btn-secondary" invisible="not active"/>
+          <button name="action_unarchive" type="object" string="Unarchive" class="btn-secondary" invisible="active"/>
+        </header>
+        <sheet>
+          <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+          <group>
+            <group>
+              <field name="root_production_id"/>
+              <field name="product_id" readonly="1"/>
+              <field name="planned_qty" readonly="1"/>
+              <field name="pending_wo_count" readonly="1"/>
+            </group>
+            <group>
+              <field name="sequence"/>
+              <field name="planning_is_rush" readonly="1"/>
+              <field name="planning_rank" readonly="1"/>
+              <field name="production_date"/>
+              <field name="current_workcenter_id" readonly="1"/>
+              <field name="is_closed" readonly="1"/>
+              <field name="planning_manual_completed" readonly="1"/>
+              <field name="active"/>
+            </group>
+          </group>
+          <group>
+            <field name="workcenter_summary" readonly="1"/>
+          </group>
+          <notebook>
+            <page string="Workcenter Status">
+              <field name="workcenter_line_ids" readonly="1">
+                <list create="false" delete="false">
+                  <field name="workcenter_id"/>
+                  <field name="planning_rush_icon" string="Rush"/>
+                  <field name="status_icon" string="State"/>
+                  <field name="status"/>
+                  <field name="pending_wo_count"/>
+                  <field name="done_wo_count"/>
+                  <field name="total_wo_count"/>
+                  <field name="next_planned_datetime"/>
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_mrp_planning_order_search" model="ir.ui.view">
+    <field name="name">mrp.planning.order.search</field>
+    <field name="model">mrp.planning.order</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="root_production_id"/>
+        <field name="product_id"/>
+        <field name="current_workcenter_id"/>
+        <separator/>
+        <filter name="open_rows" string="Not in Completed" domain="[('planning_manual_completed', '=', False)]"/>
+        <filter name="closed_rows" string="In Completed" domain="[('planning_manual_completed', '=', True), ('is_closed', '=', True)]"/>
+        <separator/>
+        <filter name="rush" string="Rush" domain="[('planning_is_rush', '=', True)]"/>
+        <separator/>
+        <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
+      </search>
+    </field>
+  </record>
+
+  <record id="action_mrp_planning_order" model="ir.actions.act_window">
+    <field name="name">Planning Sequencer</field>
+    <field name="res_model">mrp.planning.order</field>
+    <field name="view_mode">list,form</field>
+    <field name="search_view_id" ref="view_mrp_planning_order_search"/>
+    <field name="domain">[('planning_manual_completed', '=', False)]</field>
+    <field name="context">{'planning_rank_closed': False}</field>
+  </record>
+
+  <record id="action_mrp_planning_order_closed" model="ir.actions.act_window">
+    <field name="name">Completed</field>
+    <field name="res_model">mrp.planning.order</field>
+    <field name="view_mode">list,form</field>
+    <field name="view_id" ref="view_mrp_planning_order_list"/>
+    <field name="search_view_id" ref="view_mrp_planning_order_search"/>
+    <field name="domain">[('planning_manual_completed', '=', True), ('is_closed', '=', True)]</field>
+    <field name="context">{'planning_rank_closed': True}</field>
+  </record>
+
+  <record id="view_mrp_planning_wc_line_list" model="ir.ui.view">
+    <field name="name">mrp.planning.wc.line.list</field>
+    <field name="model">mrp.planning.wc.line</field>
+    <field name="arch" type="xml">
+      <list string="Workcenter Sequencer" default_order="sequence asc, id asc" create="false" delete="false">
+        <header>
+          <button name="action_apply_workcenter_schedule" type="object" string="Apply micro schedule" class="btn-primary"/>
+        </header>
+        <field name="sequence" widget="handle"/>
+        <field name="planning_rush_icon" string="Rush" class="text-center o_planning_drag_rush_col"/>
+        <field name="planning_is_rush" column_invisible="1"/>
+        <field name="workcenter_id"/>
+        <field name="planning_order_id" column_invisible="1"/>
+        <field name="pending_step_name" optional="show"/>
+        <field name="planning_product_id" optional="show"/>
+        <field name="step_production_id"/>
+        <field name="root_production_id" string="Planning root MO" optional="hide"/>
+        <field name="status_icon" string="State"/>
+        <field name="status"/>
+        <field name="pending_wo_count"/>
+        <field name="done_wo_count"/>
+        <field name="total_wo_count"/>
+        <field name="next_planned_datetime"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="view_mrp_planning_wc_line_search" model="ir.ui.view">
+    <field name="name">mrp.planning.wc.line.search</field>
+    <field name="model">mrp.planning.wc.line</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="workcenter_id"/>
+        <field name="planning_order_id"/>
+        <field name="pending_step_name"/>
+        <field name="root_product_id"/>
+        <field name="root_production_id"/>
+        <filter name="filter_pending_wc" string="Pending" domain="[('status','=','pending')]"/>
+        <filter name="filter_progress_wc" string="In Progress" domain="[('status','=','progress')]"/>
+        <filter name="filter_done_wc" string="Done" domain="[('status','=','done')]"/>
+        <filter name="filter_cancelled_wc" string="Cancelled" domain="[('status','=','cancelled')]"/>
+        <separator/>
+        <filter name="filter_open_wc" string="Open queue" domain="['|', ('status', '=', 'pending'), ('status', '=', 'progress')]"/>
+        <separator/>
+        <filter name="filter_rush_wc" string="Rush" domain="[('planning_is_rush', '=', True)]"/>
+      </search>
+    </field>
+  </record>
+
+  <record id="action_mrp_planning_wc_line" model="ir.actions.act_window">
+    <field name="name">Workcenter Sequencer</field>
+    <field name="res_model">mrp.planning.wc.line</field>
+    <field name="view_mode">list</field>
+    <field name="search_view_id" ref="view_mrp_planning_wc_line_search"/>
+    <field name="domain">[('planning_order_id.active','=',True), ('planning_order_id.planning_manual_completed','=',False)]</field>
+  </record>
+
+  <record id="server_action_wc_open_micro_planning" model="ir.actions.server">
+    <field name="name">Open Workcenter Micro Planning</field>
+    <field name="model_id" ref="mrp.model_mrp_workcenter"/>
+    <field name="binding_model_id" ref="mrp.model_mrp_workcenter"/>
+    <field name="binding_type">action</field>
+    <field name="state">code</field>
+    <field name="code">
+if records:
+    action = records[0].action_open_micro_planning()
+    </field>
+  </record>
+
+  <record id="server_action_wc_apply_micro_planning" model="ir.actions.server">
+    <field name="name">Apply Micro Planning (This Workcenter)</field>
+    <field name="model_id" ref="mrp.model_mrp_workcenter"/>
+    <field name="binding_model_id" ref="mrp.model_mrp_workcenter"/>
+    <field name="binding_type">action</field>
+    <field name="state">code</field>
+    <field name="code">
+if records:
+    records.action_apply_micro_planning()
+    </field>
+  </record>
+
+  <menuitem id="menu_mrp_planning_drag_generic_root"
+            name="Manufacturing Planning"
+            action="action_mrp_planning_order"
+            sequence="95"
+            web_icon="planning_drag_generic_19,static/description/icon.png"/>
+
+  <menuitem id="menu_mrp_planning_drag_generic_main"
+            name="Planning Sequencer"
+            parent="menu_mrp_planning_drag_generic_root"
+            action="action_mrp_planning_order"
+            sequence="10"/>
+
+  <menuitem id="menu_mrp_planning_drag_generic_completed"
+            name="Completed"
+            parent="menu_mrp_planning_drag_generic_root"
+            action="action_mrp_planning_order_closed"
+            sequence="20"/>
+
+  <menuitem id="menu_mrp_planning_wc_micro_wizard"
+            name="Planning by WC"
+            parent="menu_mrp_planning_drag_generic_root"
+            action="action_mrp_planning_wc_micro_wizard"
+            sequence="25"/>
+
+  <menuitem id="menu_mrp_planning_drag_generic_report"
+            name="Reports"
+            parent="menu_mrp_planning_drag_generic_root"
+            action="action_mrp_planning_report"
+            sequence="40"/>
+
+  <menuitem id="menu_mrp_planning_drag_generic_settings"
+            name="Settings"
+            parent="menu_mrp_planning_drag_generic_root"
+            action="action_planning_drag_generic_settings"
+            sequence="50"
+            groups="base.group_system"/>
+
+  <record id="mrp_workorder_tree_planning_drag_seq" model="ir.ui.view">
+    <field name="name">mrp.workorder.list.planning.drag.seq</field>
+    <field name="model">mrp.workorder</field>
+    <field name="inherit_id" ref="mrp.mrp_production_workorder_tree_view"/>
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='workcenter_id']" position="after">
+        <field name="planning_drag_seq" string="Plan queue" optional="hide"/>
+      </xpath>
+    </field>
+  </record>
+</odoo>
