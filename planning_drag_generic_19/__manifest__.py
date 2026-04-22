@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Manufacturing Planning Drag (Generic)",
-    "version": "19.0.1.44.0",
+    "version": "19.0.1.46.0",
     "summary": "Drag & drop production sequencer with real-time work center status, Rush priority and automatic scheduling.",
     "category": "Manufacturing/Manufacturing",
     "author": "Armonia",
