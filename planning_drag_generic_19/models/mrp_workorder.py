@@ -34,6 +34,9 @@ class MrpWorkorder(models.Model):
                 "date_start",
                 "date_finished",
                 "name",
+                "qty_produced",
+                "qty_producing",
+                "qty_production",
             )
         ):
             self.env["mrp.planning.order"].sudo()._invalidate_planning_display_cache()

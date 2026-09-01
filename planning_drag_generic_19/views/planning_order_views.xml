@@ -47,8 +47,8 @@
                 invisible="not planning_is_rush or planning_manual_completed or context.get('planning_rank_closed')"/>
         <button name="action_move_to_planning_completed" type="object" string="Move to completed"
                 class="btn btn-sm btn-secondary text-nowrap"
-                title="Move this order to the Completed list once manufacturing is fully done."
-                invisible="not is_closed or planning_manual_completed or context.get('planning_rank_closed')"/>
+                title="Move this order to Completed when there are no open work orders left."
+                invisible="pending_wo_count &gt; 0 or planning_manual_completed or context.get('planning_rank_closed')"/>
       </list>
     </field>
   </record>
@@ -63,6 +63,9 @@
                   invisible="planning_is_rush or planning_manual_completed"/>
           <button name="action_clear_planning_rush" type="object" string="Clear Rush" class="btn-secondary"
                   invisible="not planning_is_rush"/>
+          <button name="action_move_to_planning_completed" type="object" string="Move to completed"
+                  class="btn-primary"
+                  invisible="pending_wo_count &gt; 0 or planning_manual_completed"/>
           <button name="action_archive" type="object" string="Archive" class="btn-secondary" invisible="not active"/>
           <button name="action_unarchive" type="object" string="Unarchive" class="btn-secondary" invisible="active"/>
         </header>
@@ -120,7 +123,7 @@
         <field name="current_workcenter_id"/>
         <separator/>
         <filter name="open_rows" string="Not in Completed" domain="[('planning_manual_completed', '=', False)]"/>
-        <filter name="closed_rows" string="In Completed" domain="[('planning_manual_completed', '=', True), ('is_closed', '=', True)]"/>
+        <filter name="closed_rows" string="In Completed" domain="[('planning_manual_completed', '=', True)]"/>
         <separator/>
         <filter name="rush" string="Rush" domain="[('planning_is_rush', '=', True)]"/>
         <separator/>
@@ -144,7 +147,7 @@
     <field name="view_mode">list,form</field>
     <field name="view_id" ref="view_mrp_planning_order_list"/>
     <field name="search_view_id" ref="view_mrp_planning_order_search"/>
-    <field name="domain">[('planning_manual_completed', '=', True), ('is_closed', '=', True)]</field>
+    <field name="domain">[('planning_manual_completed', '=', True)]</field>
     <field name="context">{'planning_rank_closed': True}</field>
   </record>
 
@@ -256,7 +259,7 @@ if records:
   <menuitem id="menu_mrp_planning_drag_generic_report"
             name="Reports"
             parent="menu_mrp_planning_drag_generic_root"
-            action="action_mrp_planning_report"
+            action="action_mrp_planning_report_open"
             sequence="40"/>
 
   <menuitem id="menu_mrp_planning_drag_generic_settings"

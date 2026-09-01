@@ -4,21 +4,26 @@
     <field name="name">mrp.planning.report.list</field>
     <field name="model">mrp.planning.report</field>
     <field name="arch" type="xml">
-      <list string="Planning Report (Today)" create="false" edit="false" delete="false" default_order="completion_pct desc">
+      <list string="Planning Report" create="false" edit="false" delete="false" default_order="workcenter_sequence asc">
         <header>
-          <button name="refresh_from_live_data" type="object" string="Refresh report" class="btn-secondary"/>
+          <button name="refresh_from_live_data" type="object" string="Refresh report" class="btn-secondary" display="always"/>
         </header>
-        <field name="report_date"/>
-        <field name="report_datetime"/>
+        <field name="workcenter_sequence" column_invisible="1"/>
         <field name="workcenter_id"/>
-        <field name="planning_order_count"/>
-        <field name="status"/>
-        <field name="planned_qty"/>
-        <field name="produced_qty"/>
+        <field name="status" widget="badge"
+               decoration-success="status == 'done'"
+               decoration-warning="status == 'progress'"
+               decoration-danger="status == 'pending'"
+               decoration-muted="status == 'idle'"/>
+        <field name="produced_qty" string="Declared" sum="Declared"/>
+        <field name="pending_qty" string="Pending" sum="Pending"/>
+        <field name="planned_qty" optional="hide"/>
         <field name="completion_label" string="Completion"/>
-        <field name="pending_wo_count"/>
-        <field name="done_wo_count"/>
-        <field name="next_planned_datetime"/>
+        <field name="planning_order_count"/>
+        <field name="pending_wo_count" string="Open WOs"/>
+        <field name="done_wo_count" string="Done WOs" optional="hide"/>
+        <field name="next_planned_datetime" optional="hide"/>
+        <field name="report_date" optional="hide"/>
       </list>
     </field>
   </record>
@@ -27,48 +32,90 @@
     <field name="name">mrp.planning.report.kanban</field>
     <field name="model">mrp.planning.report</field>
     <field name="arch" type="xml">
-      <kanban class="o_planning_report_kanban" create="false" delete="false" default_order="completion_pct desc">
+      <kanban class="o_planning_report_kanban" create="false" delete="false"
+              records_draggable="false" can_open="false"
+              default_order="workcenter_sequence asc">
+        <header>
+          <button name="refresh_from_live_data" type="object" string="Refresh report" class="btn-secondary" display="always"/>
+        </header>
         <field name="workcenter_id"/>
-        <field name="report_date"/>
-        <field name="planning_order_count"/>
-        <field name="planned_qty"/>
+        <field name="workcenter_sequence"/>
         <field name="produced_qty"/>
+        <field name="pending_qty"/>
         <field name="completion_label"/>
         <field name="completion_pct"/>
+        <field name="bar_style"/>
         <field name="progress_state"/>
         <field name="status"/>
+        <field name="planning_order_count"/>
         <field name="pending_wo_count"/>
         <field name="done_wo_count"/>
-        <field name="next_planned_datetime"/>
         <field name="order_lines_text"/>
         <templates>
-          <t t-name="card">
-            <div t-attf-class="oe_kanban_global_click o_kanban_record o_planning_report_card o_state_#{record.progress_state.raw_value or 'danger'}">
-              <div class="o_planning_report_head">
-                <div class="o_planning_report_wc">
-                  <strong><field name="workcenter_id"/></strong>
-                </div>
-                <span class="badge text-bg-light">
-                  <field name="completion_label"/>
-                </span>
+          <div t-name="card" t-attf-class="o_planning_report_card o_state_#{record.progress_state.raw_value or 'idle'}">
+            <div class="o_planning_report_head">
+              <div class="o_planning_report_wc">
+                <span class="o_planning_report_dot"/>
+                <field name="workcenter_id"/>
               </div>
-              <div class="o_planning_report_kpi">
-                <div><span class="o_kpi_label">Planned</span> <strong><field name="planned_qty"/></strong></div>
-                <div><span class="o_kpi_label">Produced</span> <strong><field name="produced_qty"/></strong></div>
-                <div><span class="o_kpi_label">Orders</span> <strong><field name="planning_order_count"/></strong></div>
+              <span class="o_planning_report_pct">
+                <field name="completion_label"/>
+              </span>
+            </div>
+            <div class="o_planning_report_track">
+              <div class="o_planning_report_track_fill" t-att-style="record.bar_style.raw_value"/>
+            </div>
+            <div class="o_planning_report_metrics">
+              <div class="o_planning_report_metric o_metric_declared">
+                <div class="o_metric_value"><field name="produced_qty"/></div>
+                <div class="o_metric_label">Declared</div>
               </div>
-              <div class="o_planning_report_meta">
-                <span>Pending: <field name="pending_wo_count"/></span>
-                <span>Done: <field name="done_wo_count"/></span>
-              </div>
-              <div class="o_planning_report_orders">
-                <div class="o_orders_title">Today orders (Produced / Planned)</div>
-                <pre><field name="order_lines_text"/></pre>
+              <div class="o_planning_report_metric_split"/>
+              <div class="o_planning_report_metric o_metric_pending">
+                <div class="o_metric_value"><field name="pending_qty"/></div>
+                <div class="o_metric_label">Pending</div>
               </div>
             </div>
-          </t>
+            <div class="o_planning_report_foot">
+              <span t-if="record.planning_order_count.raw_value">
+                <field name="planning_order_count"/> orders
+              </span>
+              <span t-else="" class="text-muted">No orders</span>
+              <span t-if="record.pending_wo_count.raw_value" class="ms-auto">
+                <field name="pending_wo_count"/> open WO
+              </span>
+            </div>
+          </div>
         </templates>
       </kanban>
+    </field>
+  </record>
+
+  <record id="view_mrp_planning_report_form" model="ir.ui.view">
+    <field name="name">mrp.planning.report.form</field>
+    <field name="model">mrp.planning.report</field>
+    <field name="arch" type="xml">
+      <form string="Workcenter Report" create="false" edit="false" delete="false">
+        <sheet>
+          <group>
+            <group>
+              <field name="workcenter_id"/>
+              <field name="status"/>
+              <field name="produced_qty"/>
+              <field name="pending_qty"/>
+            </group>
+            <group>
+              <field name="completion_label"/>
+              <field name="planning_order_count"/>
+              <field name="pending_wo_count"/>
+              <field name="done_wo_count"/>
+            </group>
+          </group>
+          <group string="Orders">
+            <field name="order_lines_text" nolabel="1" colspan="2"/>
+          </group>
+        </sheet>
+      </form>
     </field>
   </record>
 
@@ -76,16 +123,12 @@
     <field name="name">mrp.planning.report.pivot</field>
     <field name="model">mrp.planning.report</field>
     <field name="arch" type="xml">
-      <pivot string="Planning Report (Today)">
+      <pivot string="Planning Report">
         <field name="workcenter_id" type="row"/>
         <field name="status" type="row"/>
-        <field name="report_date" type="col"/>
-        <field name="planning_order_count" type="measure"/>
-        <field name="planned_qty" type="measure"/>
         <field name="produced_qty" type="measure"/>
-        <field name="completion_pct" type="measure"/>
-        <field name="pending_wo_count" type="measure"/>
-        <field name="done_wo_count" type="measure"/>
+        <field name="pending_qty" type="measure"/>
+        <field name="planning_order_count" type="measure"/>
       </pivot>
     </field>
   </record>
@@ -94,10 +137,10 @@
     <field name="name">mrp.planning.report.graph</field>
     <field name="model">mrp.planning.report</field>
     <field name="arch" type="xml">
-      <graph string="Planning Report (Today)" type="bar" stacked="True">
+      <graph string="Planning Report" type="bar" stacked="True">
         <field name="workcenter_id"/>
-        <field name="planned_qty" type="measure"/>
         <field name="produced_qty" type="measure"/>
+        <field name="pending_qty" type="measure"/>
       </graph>
     </field>
   </record>
@@ -109,15 +152,13 @@
       <search>
         <field name="workcenter_id"/>
         <field name="status"/>
-        <field name="report_datetime"/>
-        <field name="report_date"/>
         <separator/>
         <filter name="today" string="Today" domain="[('report_date', '=', context_today())]"/>
         <separator/>
         <filter name="status_pending" string="Pending" domain="[('status','=','pending')]"/>
         <filter name="status_progress" string="In Progress" domain="[('status','=','progress')]"/>
         <filter name="status_done" string="Done" domain="[('status','=','done')]"/>
-        <filter name="status_cancelled" string="Cancelled" domain="[('status','=','cancelled')]"/>
+        <filter name="status_idle" string="Idle" domain="[('status','=','idle')]"/>
         <separator/>
         <filter name="group_workcenter" string="Group by Workcenter" context="{'group_by':'workcenter_id'}"/>
         <filter name="group_status" string="Group by Status" context="{'group_by':'status'}"/>
@@ -131,5 +172,20 @@
     <field name="view_mode">kanban,list,pivot,graph</field>
     <field name="search_view_id" ref="view_mrp_planning_report_search"/>
     <field name="context">{'search_default_today': 1}</field>
+  </record>
+
+  <record id="action_mrp_planning_report_open" model="ir.actions.server">
+    <field name="name">Planning Report</field>
+    <field name="model_id" ref="model_mrp_planning_report"/>
+    <field name="state">code</field>
+    <field name="code">model.refresh_from_live_data()
+action = {
+    "type": "ir.actions.act_window",
+    "name": "Planning Report",
+    "res_model": "mrp.planning.report",
+    "view_mode": "kanban,list,pivot,graph",
+    "target": "current",
+    "context": {"search_default_today": 1},
+}</field>
   </record>
 </odoo>

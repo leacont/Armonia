@@ -364,7 +364,7 @@ class MrpPlanningOrder(models.Model):
         return res
 
     def _related_mos(self):
-        """Return root MO + recursively discovered children by origin/name links."""
+        """Return root MO + children whose origin is this MO name (not a substring ilike)."""
         self.ensure_one()
         root = self.root_production_id
         if not root:
@@ -377,10 +377,7 @@ class MrpPlanningOrder(models.Model):
 
         while frontier_names and depth < 8:
             depth += 1
-            children = mo_model.browse()
-            for mo_name in frontier_names:
-                # origin is free text, so we use ilike and then deduplicate.
-                children |= mo_model.search([("origin", "ilike", mo_name)])
+            children = mo_model.search([("origin", "in", list(frontier_names))])
             children -= all_mos
             if not children:
                 break
@@ -390,15 +387,17 @@ class MrpPlanningOrder(models.Model):
         return all_mos
 
     def _planning_mrp_fully_closed(self, pending_wos=None):
-        """Live MRP truth: no open work orders and no MO still active in this planning tree.
+        """True when this planning tree has no open work orders left.
 
-        Used by list domains and ``#`` ranking so we never rely on a stale cached ``is_closed``.
-        ``pending_wos`` optional browse recordset from ``_compute_info`` to avoid a duplicate search.
+        Shop floor often finishes every WO while the MO stays in progress/to_close
+        until someone clicks Mark as Done. Planning treats that as complete.
         """
         self.ensure_one()
         root = self.root_production_id
         if not root:
             return False
+        if root.state == "cancel":
+            return True
         mos = self._related_mos()
         if not mos:
             return False
@@ -415,10 +414,7 @@ class MrpPlanningOrder(models.Model):
             )
         else:
             has_pending = bool(pending_wos)
-        if has_pending:
-            return False
-        open_mo = mos.filtered(lambda m: m.state not in ("done", "cancel"))
-        return not bool(open_mo)
+        return not has_pending
 
     @api.model
     def _wo_order_expr(self):
@@ -803,7 +799,7 @@ class MrpPlanningOrder(models.Model):
         return True
 
     def action_move_to_planning_completed(self):
-        """Manual move to the Completed menu (only when MRP is 100% done)."""
+        """Manual move to the Completed menu (when no open work orders remain)."""
         if not self:
             raise UserError(_("Select at least one row to move to Completed."))
         todo = self.filtered(lambda r: r.active and not r.planning_manual_completed)
@@ -813,12 +809,21 @@ class MrpPlanningOrder(models.Model):
             if not rec._planning_mrp_fully_closed():
                 raise UserError(
                     _(
-                        "Manufacturing is not fully finished yet (open work orders or manufacturing "
-                        "orders remain in this tree)."
+                        "There are still open work orders on %(mo)s. Finish them before moving "
+                        "this row to Completed.",
+                        mo=rec.root_production_id.display_name or rec.display_name,
                     )
                 )
         todo.write({"planning_manual_completed": True, "planning_is_rush": False})
-        return True
+        xmlid = (
+            "planning_drag_generic_19.action_mrp_planning_order_closed"
+            if self.env.context.get("planning_rank_closed")
+            else "planning_drag_generic_19.action_mrp_planning_order"
+        )
+        try:
+            return self.env["ir.actions.act_window"]._for_xml_id(xmlid)
+        except ValueError:
+            return True
 
     def action_set_planning_rush(self):
         """Mark this row as the single Rush priority (open planning only)."""
